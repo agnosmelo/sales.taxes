@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-@Component
-public class ValidationImpl implements ValidationService {
 
-    @Override
-    public void validate(ProductModel product) throws BadRequestException {
+public class ValidationUtils {
+
+
+    public static void validate(ProductModel product) throws BadRequestException {
 
         isNotNull(product);
         propertiesArePopulated(product);
@@ -18,7 +18,7 @@ public class ValidationImpl implements ValidationService {
 
     }
 
-    private void notNegativeValue (ProductModel product) throws BadRequestException {
+    private static void notNegativeValue(ProductModel product) throws BadRequestException {
 
         if( product.getPrice().compareTo(BigDecimal.ZERO) < 0 || product.getQuantity() < 0) {
             throw new
@@ -26,7 +26,7 @@ public class ValidationImpl implements ValidationService {
         }
     }
 
-    private void propertiesArePopulated(ProductModel product) throws BadRequestException {
+    private static void propertiesArePopulated(ProductModel product) throws BadRequestException {
         if (product.getCategory() == null || product.getImported() == null || product.getNameProduct() == null || product.getQuantity() == null  || product.getPrice() == null){
             throw new
                     BadRequestException("Product properties are not Populated");
@@ -34,7 +34,7 @@ public class ValidationImpl implements ValidationService {
 
     }
 
-    private void isNotNull(ProductModel product) throws BadRequestException {
+    private static void isNotNull(ProductModel product) throws BadRequestException {
         if (product == null) {
             throw new
                     BadRequestException("Product is null");

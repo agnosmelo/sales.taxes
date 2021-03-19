@@ -17,17 +17,9 @@ import static java.math.BigDecimal.ZERO;
 @Service
 public class TaxServiceImpl implements TaxService {
 
-    private BigDecimal basicTax = BigDecimal.valueOf(0.1);
-    private BigDecimal importedTax = BigDecimal.valueOf(0.05);
-    private BigDecimal roundRule = BigDecimal.valueOf(0.05);
-
-
-    @Autowired
-    private ValidationService validations;
-
-    public TaxServiceImpl() {
-    }
-
+    private static final BigDecimal basicTax = BigDecimal.valueOf(0.1);
+    private static final BigDecimal importedTax = BigDecimal.valueOf(0.05);
+    private static final BigDecimal roundRule = BigDecimal.valueOf(0.05);
 
     @Override
     public TaxResponse responseCalculate(Collection<ProductModel> products) throws BadRequestException {
@@ -36,7 +28,7 @@ public class TaxServiceImpl implements TaxService {
         BigDecimal finalSumProducts = ZERO;
         for (ProductModel product : products) {
 
-            validations.validate(product);
+            ValidationUtils.validate(product);
             BigDecimal taxCalculate = calculate(product);
             finalSalesTax = finalSalesTax.add(taxCalculate);
 
