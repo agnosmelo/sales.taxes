@@ -1,10 +1,14 @@
-package com.liferay.sales.taxes.persistense.entity;
+package com.liferay.sales.taxes.domain.model;
 
 import com.liferay.sales.taxes.domain.enums.CategoryEnum;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ProductEntity {
+import java.math.BigDecimal;
+
+@Builder
+public class ProductModel {
 
     @Getter
     @Setter
@@ -16,7 +20,7 @@ public class ProductEntity {
 
     @Getter
     @Setter
-    private Double price;
+    private BigDecimal price;
 
     @Getter
     @Setter
