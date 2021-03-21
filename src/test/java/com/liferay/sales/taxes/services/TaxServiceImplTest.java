@@ -31,26 +31,63 @@ class TaxServiceImplTest {
     }
 
     @Test
-    public void basico() {
+    public void basicTest() {
         Assertions.assertThat(1).isEqualTo(1);
     }
     @Test
     public void basicTaxResponseCalculateCategoryNonTaxable() throws Exception{
-        //Prepara
+
         ProductModel product = createProductModel(CategoryEnum.BOOKS,"Book",BigDecimal.valueOf(12.49),1,false);
 
-        //Roda
         TaxResponse result = taxService.responseCalculate(Collections.singletonList(product));
 
-        //Verifica
         ProductResponse productResponse = new ProductResponse();
         productResponse.setQuantity(1);
         productResponse.setPrice(BigDecimal.valueOf(12.49));
-           productResponse.setNameProduct("Book");
+        productResponse.setNameProduct("Book");
 
         Assertions.assertThat(result.getMessage()).isNull();
         Assertions.assertThat(result.getSalesTaxes()).isEqualTo("0.00");
         Assertions.assertThat(result.getTotal()).isEqualTo(BigDecimal.valueOf(12.49));
+        Assertions.assertThat(result.getProductResponses()).contains(productResponse);
+
+    }
+
+    @Test
+    public void basicTaxResponseCalculateCategoryTaxable() throws Exception{
+
+        ProductModel product = createProductModel(CategoryEnum.OTHER,"Music CD",BigDecimal.valueOf(14.99),1,false);
+
+        TaxResponse result = taxService.responseCalculate(Collections.singletonList(product));
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setQuantity(1);
+        productResponse.setPrice(BigDecimal.valueOf(16.49));
+        productResponse.setNameProduct("Music CD");
+
+        Assertions.assertThat(result.getMessage()).isNull();
+        Assertions.assertThat(result.getSalesTaxes()).isEqualTo("1.50");
+        Assertions.assertThat(result.getTotal()).isEqualTo(BigDecimal.valueOf(16.49));
+        Assertions.assertThat(result.getProductResponses()).contains(productResponse);
+
+    }
+
+    @Test
+    public void basicTaxResponseCalculateImported() throws Exception{
+
+        ProductModel product = createProductModel(CategoryEnum.OTHER,"bottle of perfume",BigDecimal.valueOf(47.50),1,true);
+
+
+        TaxResponse result = taxService.responseCalculate(Collections.singletonList(product));
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setQuantity(1);
+        productResponse.setPrice(BigDecimal.valueOf(54.65));
+        productResponse.setNameProduct("bottle of perfume");
+
+        Assertions.assertThat(result.getMessage()).isNull();
+        Assertions.assertThat(result.getSalesTaxes()).isEqualTo("7.15");
+        Assertions.assertThat(result.getTotal()).isEqualTo(BigDecimal.valueOf(54.65));
         Assertions.assertThat(result.getProductResponses()).contains(productResponse);
 
     }
@@ -69,42 +106,5 @@ class TaxServiceImplTest {
 
 
     }
-
-  /*
-    @Test
-    void basicTaxResponseCalculateCategoryTaxable() throws Exception{
-
-        ProductModel product = createProductModel(CategoryEnum.OTHER,"Book",12.49,1,false);
-
-        TaxResponse result = taxService.responseCalculate(Collections.singletonList(product));
-
-        //Assertions.assertThat(result).isEqualTo()
-    }
-
-
-    @Test
-    void basicTaxResponseCalculateImported() throws Exception{
-
-        ProductModel product = createProductModel(CategoryEnum.BOOKS,"Book",12.49,1,true);
-
-        String result = taxService.responseCalculate(Collections.singletonList(product));
-
-        //Assertions.assertThat(result).isEqualTo()
-    }
-
-    @Test
-    void basicTaxResponseCalculateNotImported() throws Exception{
-
-        ProductModel product = createProductModel(CategoryEnum.BOOKS,"Book",12.49,1,false);
-
-        String result = taxService.responseCalculate(Collections.singletonList(product));
-
-        //Assertions.assertThat(result).isEqualTo()
-    }
-
-
-
-
-*/
 
 }

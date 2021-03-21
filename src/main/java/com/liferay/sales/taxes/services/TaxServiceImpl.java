@@ -57,21 +57,6 @@ public class TaxServiceImpl implements TaxService {
 
     }
 
-//    private Double calculateTaxSale(Collection<ProductModel> products) {
-//
-//        Double totalTax = 0.0;
-//
-//        for (ProductModel product : products) {
-//
-//            Double quantity = new Double(product.getQuantity());
-//            Double finalTaxAmaunt = calculate(product);
-//            totalTax = totalTax + (quantity * finalTaxAmaunt);
-//
-//        }
-//        return totalTax;
-//    }
-
-
     private BigDecimal calculateTaxPercentage(ProductModel product) {
         BigDecimal tax = BigDecimal.valueOf(0.0);
 
